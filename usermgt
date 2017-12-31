@@ -1,0 +1,153 @@
+#!/bin/bash
+
+##Les fonctions
+
+#les couleurs et formats
+defc="\e[39m"
+defb="\e[21m"
+defu="\e[24m"
+
+b="\e[1m"
+u="\e[4m"
+
+cyan="\e[36m"
+red="\e[91m"
+yel="\e[93m"
+green="\e[92m"
+blue="\e[34m"
+orange="\e[38;5;214m"
+
+#Les fonctions
+#Alert
+alert(){
+if test "$USER" = "root"; then
+ echo -n ""
+else
+	echo -e "\n$orange$b [!] Cette commande ne fonctionnera pas si vous n'avez pas les droits de super utilisateur (root)$defb$defc \n"
+fi
+
+}
+
+bienv(){
+echo -e "\n $b   ******$cyan$u.USERMGT V1.0.$defu$red BETA$defc ******* $defb"
+}
+
+#afficher 
+ bienv
+
+menu(){
+clear
+bienv
+alert
+echo
+
+	echo "1-Ajouter des utilisateurs"
+	
+	echo "2- A propos de $USER"
+	echo "3-Aide"
+	echo "... A venir..s"
+	
+control	
+}
+control(){
+echo -ne "$b Choisir un chiffre:$defb "
+read choix
+case $choix in
+1)
+	ajouter
+;;
+2)
+	propos
+;;
+3)
+	aide
+;;
+esac
+
+}
+#fonction ajouter
+ajouter(){
+clear 
+bienv
+echo
+echo -ne "$b Entrer le nombre d'utilisateur à ajouter :$defb "
+read nb
+i=1
+while test $i -le $nb; do
+	echo -ne "Entrer le nom de l'utilisateur $i :"
+	read nom
+	useradd $nom
+	passwd $nom
+	echo
+echo -e "\n$green [*] Utilisateur  $b$nom$defb ajouté$defc\n"
+i=$(($i+1))
+done
+echo
+echo -n "Appuyer sur une touche pour continuer..."
+read
+menu
+
+}
+
+#fonction propos
+propos(){
+clear
+bienv
+echo
+echo -e "$b$cyan [i]$defc A propos de $USER $defb"
+echo
+echo -e "$b$cyan Login:$defc $USER$defb"
+echo
+echo -ne "$b$cyan Groupe:$defc "
+groups
+echo -e "$defb"
+
+echo -e "$b$cyan Répertoire personnel:$defc $HOME$defb"
+echo
+echo -ne "$b$cyan Répertoire actuel:$defc "
+pwd
+echo -e "$defb"
+#echo
+#echo -e "$b$cyan $defc$defb"
+echo
+echo -n "Appuyer sur une touche pour continuer..."
+read
+menu
+
+}
+
+#fonction aide
+aide(){
+
+clear
+bienv
+echo
+echo -e "$b$cyan [i]$defc permet d'ajouter plusieurs utilisateurs à la fois$defb"
+echo
+echo -e "$b$cyan USAGE$defc$defb usermgt user1 user2 user3 ... userN $b OU $defb usermgt"
+echo
+echo -e "$b$cyan Exemple:$defc$defb usermgt marc paul clair"
+echo
+echo -n "Appuyer sur une touche pour continuer..."
+read
+menu
+}
+#aide
+
+##le main
+
+if test $# -ge 1; then
+
+	for arg;do
+		useradd -m $arg
+		echo -e "$b Pour: $arg $defb"
+		
+		passwd $arg
+		printf "\n$green [*] Utilisateur  $b$arg$defb ajouté$defc\n"
+
+	
+	done
+else 
+menu
+
+fi

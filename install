@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#Script d'installation
+
+#les couleurs et formats
+defc="\e[39m"
+defb="\e[21m"
+defu="\e[24m"
+
+b="\e[1m"
+u="\e[4m"
+
+cyan="\e[36m"
+red="\e[91m"
+yel="\e[93m"
+green="\e[92m"
+blue="\e[34m"
+orange="\e[38;5;214m"
+
+
+echo -e "\n $b   ******$cyan$u.USERMGT V1.0.$defu$red BETA$defc ******* "
+
+echo
+
+echo -e "\n$cyan [*]$defc Installation en cours ..."
+mv usermgt /usr/local/bin
+chmod 755 /usr/local/bin/usermgt
+echo -e "\n$green [*]$defc Installation reussie !"
+
+echo
+echo -n "Appuyer sur une touche pour continuer..."
+read
+
+
+
